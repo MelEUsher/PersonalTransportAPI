@@ -1,164 +1,91 @@
 ## Personal Transport API
 
-A lightweight REST API for managing personal transport rentals — including bikes, scooters, and future vehicle types.
-Built for clarity, simplicity, and collaborative development.
+Lightweight FastAPI scaffold for powering personal transport services (scooters, bikes, and beyond).
+The initial goal is a deterministic, reproducible backend foundation that the team can grow rapidly.
+
 ---
 
-## Features
+## Current Capabilities
+- FastAPI application bootstrap with `/health` returning `{"status": "ok"}`
+- SQLAlchemy engine + session factory configured via environment variables
+- Ready-to-extend module layout for models, schemas, routers, and services
+- SQLite database default for local development (override with `DATABASE_URL`)
 
-- CRUD endpoints for bikes and rentals
-- JSON-based REST architecture
-- Clean GitHub workflow (Issues → Branches → PRs → Merge)
-- Project board flow: To Do → In Progress → Done
-- Modular foundation for future expansion
+## Tech Stack
+- Python 3.10+
+- FastAPI
+- SQLAlchemy + Alembic
+- SQLite (development)
+- Uvicorn
+- python-dotenv
 
-### Planned Enhancements
-- Migration to **FastAPI** for async + auto-docs
-- Authentication & Authorization
-- Payments and transaction tracking
-- Availability and inventory management logic
-- Automated test suite and CI integration
----
-
-### Tech Stack
-- **Python 3.10+**
-- **Flask**
-- **JSON REST API**
-- **GitHub Projects + Actions**
 ---
 
 ## Getting Started
-If you’re setting this up for the first time, follow these steps exactly.
+Follow these steps exactly to spin up the local backend.
 
-### 1) Clone
-git clone https://github.com/MelEUsher/PersonalTransportAPI.git
-cd PersonalTransportAPI
+1. **Clone and enter the project**
+   ```
+   git clone https://github.com/MelEUsher/PersonalTransportAPI.git
+   cd PersonalTransportAPI
+   ```
+2. **Create & activate a virtual environment**
+   - macOS/Linux
+     ```
+     python3 -m venv .venv
+     source .venv/bin/activate
+     ```
+   - Windows (PowerShell)
+     ```
+     python -m venv .venv
+     .\.venv\Scripts\Activate.ps1
+     ```
+3. **Install dependencies**
+   ```
+   pip install --upgrade pip
+   pip install -r requirements.txt
+   ```
+4. **Configure environment variables**
+   ```
+   cp .env.example .env
+   ```
+   Adjust `DATABASE_URL` if you are not using the default SQLite database.
+5. **Run the development server**
+   ```
+   uvicorn app.main:app --reload
+   ```
+6. **Smoke test the API**
+   Visit http://localhost:8000/health or run:
+   ```
+   curl http://localhost:8000/health
+   ```
+   Expect: `{"status":"ok"}`
 
-### 2) Create & activate a virtual environment
-
-**macOS/Linux**
-python3 -m venv .venv
-source .venv/bin/activate
-**Windows (CMD)**
-python -m venv .venv
-.venv\Scripts\activate
-
-### 3) Install dependencies
-pip install -r requirements.txt
-
-### 4) Run the app
-Preferred:
-python app.py
-
-Alternative:
-# macOS/Linux
-export FLASK_APP=app.py
-flask run --port 5000
-
-# Windows CMD
-set FLASK_APP=app.py
-flask run --port 5000
-
-# Windows PowerShell
-$Env:FLASK_APP="app.py"
-flask run --port 5000
-Visit: http://localhost:5000
+---
 
 ## Project Structure
-
+```
 PersonalTransportAPI/
-├─ .github/
-│  ├─ ISSUE_TEMPLATE/
-│  │  ├─ config.yml
-│  │  └─ task.md
-│  ├─ workflows/
-│  └─ pull_request_template.md
+├─ .env.example
+├─ .gitignore
 ├─ app/
 │  ├─ __init__.py
-│  ├─ routes/
-│  │  ├─ bikes.py
-│  │  ├─ rentals.py
-│  │  └─ __init__.py
+│  ├─ db.py
+│  ├─ main.py
 │  ├─ models/
-│  │  ├─ bike_model.py
-│  │  ├─ rental_model.py
-│  │  └─ __init__.py
-│  └─ utils/
-│     ├─ helpers.py
-│     └─ __init__.py
-├─ tests/
-│  ├─ __init__.py
-│  └─ test_routes.py
-├─ app.py
-├─ app.json
-├─ CONTRIBUTING.md
-├─ Procfile
+│  ├─ routers/
+│  ├─ schemas/
+│  └─ services/
 ├─ requirements.txt
-├─ scooter_db.json
-└─ .gitignore
+└─ (additional project docs and configs)
+```
 
+---
 
 ## Development Workflow
-Keep it simple and consistent.
-
-### 1) Create an Issue
-Each new task starts as an Issue using the Task template.
-Track it in the GitHub Project board.
-### 2) Create a branch
-Use strict naming:
-feature/issue-##
-bugfix/issue-##
-chore/issue-##
-
-Examples:
-feature/issue-12-rentals-endpoint
-bugfix/issue-7-auth-timezone
-chore/issue-3-readme-update
-
-CLI:
-git checkout master
-git pull
-git checkout -b feature/issue-12-rentals-endpoint
-
-### 3) Do the work, commit small, push
-git add .
-git commit -m "Issue #12: implement /rentals endpoints and validation"
-git push -u origin feature/issue-12-rentals-endpoint
-
-### 4) Open a Pull Request
-In your PR description, include:
-Closes #<issue-number>
-GitHub will automatically close the Issue when the PR merges.
-
-### 5) Merge process
-PR review required — direct pushes to master are disabled.
-
-## Working With the Project Board
-- New Issues auto-add to the Project
-- Move Issues manually between To Do, In Progress, and Done
-- Simplicity over automation — manual tracking is expected
-
-## Testing
-(Placeholder — test suite integration coming soon)
-
-Expected:
-pytest -q
-or
-make test
-
-### Contributing
-
-See **CONTRIBUTING.md** for:
-- Branch naming conventions
-- Issue → Branch → PR workflow
-- Review and merge checklist
-
-### License
-If a LICENSE file is added, it will be referenced here.
-
-### Project History
-This repository began as a fork of KaranErry/scooterAPI.
-It’s now evolving into a Personal Transport API —
-a unified, modernized backend for managing small vehicle rentals (bikes, scooters, etc.).
-Current owner & direction: Mel Usher
-Repository: MelEUsher/PersonalTransportAPI
+Keep the workflow simple and predictable:
+- Open an **Issue** for each piece of work.
+- Branch from `master` using the format `feature/issue-#/short-name`, `bugfix/issue-#/short-name`, or `chore/issue-#/short-name`.
+- Open a **Pull Request** that references the Issue (`Closes #<issue-number>`).
+- Merge when checks pass; the Issue will close automatically.
+- Keep the GitHub Project board in sync (To Do → In Progress → Done).
