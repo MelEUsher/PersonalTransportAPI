@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Alembic
+alembic/versions/__pycache__/
+alembic/versions/*.pyc
