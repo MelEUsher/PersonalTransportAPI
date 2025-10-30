@@ -63,3 +63,14 @@
 - python3 -m app.schemas.* and python3 -m app.repositories.* → all modules import successfully
 - pytest → no import or schema mismatches detected
 
+## [feature/issue-8-rental-service] - 2025-10-30
+**Summary:** Implemented and tested pure business logic for rental validation and pricing.
+
+**Changes**
+- app/services/rental_service.py: added functions for validating date ranges, computing total price, and checking availability
+- tests/test_rental_service.py: full coverage for valid/error paths and mixed input types
+
+**Verification**
+- pytest confirms all branches and error conditions pass
+- all functions deterministic, with no database or HTTP interactions
+
