@@ -46,3 +46,20 @@
 - project runs successfully without Flask dependencies
 
 ---
+
+## [feature/issue-7-schemas-repositories] - 2025-10-29
+**Summary:** Implemented Pydantic v2 schemas and repository helpers for bikes, users, and rentals to establish a clean, modular data layer.
+
+**Changes**
+- app/schemas/bike_schema.py: added BikeCreate and BikeRead schemas with AvailabilityStatus enum and ConfigDict(from_attributes=True) for ORM compatibility
+- app/schemas/user_schema.py: added UserCreate and UserRead schemas including optional phone field
+- app/schemas/rental_schema.py: added RentalCreate and RentalRead schemas covering date fields and created_at on the read model
+- app/repositories/bike_repo.py: implemented create_bike, get_bike_by_id, and get_all_bikes using SQLAlchemy 2.0-style queries
+- app/repositories/user_repo.py: implemented create_user, get_user_by_id, and get_all_users helpers
+- app/repositories/rental_repo.py: implemented create_rental, get_rental_by_id, and get_all_rentals helpers
+- app/repositories/init.py: declared repositories package for import consistency
+
+**Verification**
+- python3 -m app.schemas.* and python3 -m app.repositories.* → all modules import successfully
+- pytest → no import or schema mismatches detected
+
