@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from dotenv import load_dotenv
 
-from app.routers import bikes
+from app.routers import bikes, rentals
 
 # Load environment variables from a .env file if present.
 load_dotenv()
@@ -10,6 +10,7 @@ load_dotenv()
 app = FastAPI(title="Personal Transport API")
 
 app.include_router(bikes.router)
+app.include_router(rentals.router)
 
 
 @app.get("/health", tags=["system"])
