@@ -85,4 +85,19 @@
 **Verification**
 - Run uvicorn app.main:app --reload and confirm GET /api/bikes returns an HTTP 200 JSON array of available bikes.
 - Optionally seed a few available bikes to verify non-empty responses.
-- 
+  
+## [feature/issue-10-rentals-router] - 2025-10-30
+**Summary:** Implemented rentals API routing for creating and retrieving rental records, leveraging the service layer for validation, pricing, and consistent error handling.
+
+**Changes**
+- app/routers/rentals.py: added POST /api/rentals and GET /api/rentals/{id} endpoints with validation, availability checks, computed pricing, and structured JSON error responses.
+- app/main.py: registered the rentals router so endpoints are served under `/api/rentals`.
+
+**Verification**
+- Run `uvicorn app.main:app --reload` and test:
+  - ✅ `POST /api/rentals` → returns 200 with `RentalRead` for valid requests.  
+  - ❌ Invalid range → 400 `INVALID_RANGE`.  
+  - ❌ Bike unavailable → 409 `UNAVAILABLE`.  
+  - ❌ Missing rental ID → 404 `NOT_FOUND`.  
+- `pytest` confirms no regressions and validates core service logic.
+
