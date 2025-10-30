@@ -13,15 +13,15 @@ def home():
 @app.route('/view_all_available')
 def view_all_available():
 	db = init_db()
-	available_scooters = [scooter for scooter in db if not scooter.is_reserved]
-	available_scooters_dictlist = convert_db_to_dictlist(available_scooters)
-	return json.dumps(available_scooters_dictlist), HTTPStatus.OK.value, {'Content-Type':'application/json'}	# return a json-ified list of all the scooters with status 200
+	available_bikes = [bike for bike in db if not bike.is_reserved]
+	available_bikes_dictlist = convert_db_to_dictlist(available_bikes)
+	return json.dumps(available_bikes_dictlist), HTTPStatus.OK.value, {'Content-Type':'application/json'}	# return a json-ified list of all the bikes with status 200
 
 
-# Search for scooters
+# Search for bikes
 @app.route('/search', methods=['GET'])
 def search():
-	# Search for scooters in the database
+	# Search for bikes in the database
 	# parse request params
 	try:
 		search_lat, search_lng, search_radius = \
@@ -47,14 +47,14 @@ def search():
 	db = init_db()	# initialize db
 
 	search_results = []
-	for scooter in db:
-		# Calculate distance between the scooter location point and the search location point, in metres
-		distance = geodesic((scooter.lat, scooter.lng), (search_lat, search_lng)).m
-		if distance <= search_radius and not scooter.is_reserved:
-			# this scooter is available and within the search area
-			search_results.append({	'id':scooter.id, 
-									'lat':scooter.lat, 
-									'lng':scooter.lng
+	for bike in db:
+		# Calculate distance between the bike location point and the search location point, in metres
+		distance = geodesic((bike.lat, bike.lng), (search_lat, search_lng)).m
+		if distance <= search_radius and not bike.is_reserved:
+			# this bike is available and within the search area
+			search_results.append({	'id':bike.id, 
+									'lat':bike.lat, 
+									'lng':bike.lng
 								  })
 			
 	return json.dumps(search_results), HTTPStatus.OK.value, {'Content-Type':'application/json'}	# return json-ified search results list with status 200
@@ -65,7 +65,7 @@ def search():
 def start_reservation():
 	# parse request params
 	try:
-		reserve_id = request.args['id']	# parse request for id of scooter to be reserved
+		reserve_id = request.args['id']	# parse request for id of bike to be reserved
 	except werkzeug.exceptions.BadRequestKeyError:
 		# the required parameters are not present in the search query
 		error = { 'msg': 'Error 422 - Please include all required parameters in search query' }
@@ -73,24 +73,24 @@ def start_reservation():
 
 	db = init_db()
 	
-	# try and find the scooter with specified id
-	scooter = get_scooter_with_id(reserve_id, db)
-	if scooter:
+	# try and find the bike with specified id
+	bike = get_bike_with_id(reserve_id, db)
+	if bike:
 		# reserve if possible
-		if not scooter.is_reserved:
-			# scooter can be reserved
-			scooter.is_reserved = True
+		if not bike.is_reserved:
+			# bike can be reserved
+			bike.is_reserved = True
 			write_db(db)	# update db
-			success = { 'msg': f'Scooter {reserve_id} was reserved successfully.' }
+			success = { 'msg': f'Bike {reserve_id} was reserved successfully.' }
 			return json.dumps(success), HTTPStatus.OK.value, {'Content-Type':'application/json'}	# respond with status 200
 
 		else:
-			# the scooter is already reserved
-			error = { 'msg': f'Error 422 - Scooter with id {reserve_id} is already reserved.' }
+			# the bike is already reserved
+			error = { 'msg': f'Error 422 - Bike with id {reserve_id} is already reserved.' }
 			return json.dumps(error), HTTPStatus.UNPROCESSABLE_ENTITY.value, {'Content-Type':'application/json'}	# respond with status 422
 	else:
-		# no scooter with the reserve id was found
-		error = { 'msg': f'Error 422 - No scooter with id {reserve_id} was found.' }
+		# no bike with the reserve id was found
+		error = { 'msg': f'Error 422 - No bike with id {reserve_id} was found.' }
 		return json.dumps(error), HTTPStatus.UNPROCESSABLE_ENTITY.value, {'Content-Type':'application/json'}	# respond with status 422
 
 
@@ -99,7 +99,7 @@ def start_reservation():
 def end_reservation():
 	# parse request params
 	try:
-		scooter_id_to_end = request.args['id']	# parse request for id of scooter whose reservation to be ended
+		bike_id_to_end = request.args['id']	# parse request for id of bike whose reservation to be ended
 		end_lat, end_lng = \
 			float(request.args['lat']), \
 			float(request.args['lng'])
@@ -120,24 +120,24 @@ def end_reservation():
 		error = { 'msg': 'Error 422 - Longitude must be in the [-180, 180] range.'}
 		return json.dumps(error), HTTPStatus.UNPROCESSABLE_ENTITY.value, {'Content-Type':'application/json'}	# respond with status 422
 		
-	# try and find the scooter with specified id
-	scooter = get_scooter_with_id(scooter_id_to_end, db)
-	if scooter:
+	# try and find the bike with specified id
+	bike = get_bike_with_id(bike_id_to_end, db)
+	if bike:
 		# end reservation if possible
-		if scooter.is_reserved:
-			# scooter is reserved and can be ended
+		if bike.is_reserved:
+			# bike is reserved and can be ended
 			
 			# initiate payment
-			payment_response = pay(scooter, end_lat, end_lng)
+			payment_response = pay(bike, end_lat, end_lng)
 			if payment_response['status']:
 				# the payment was completed successfully
 				
-				# update scooter's reserved status and location
-				scooter.is_reserved = False
-				scooter.lat, scooter.lng = end_lat, end_lng
+				# update bike's reserved status and location
+				bike.is_reserved = False
+				bike.lat, bike.lng = end_lat, end_lng
 				write_db(db)
 				# construct successful response
-				success =	{	'msg': f'Payment for scooter {scooter_id_to_end} was made successfully and the reservation was ended.',
+				success =	{	'msg': f'Payment for bike {bike_id_to_end} was made successfully and the reservation was ended.',
 								'txn_id': payment_response['txn_id']
 							}
 				return json.dumps(success), HTTPStatus.OK.value, {'Content-Type':'application/json'}	# respond with status 200
@@ -147,12 +147,12 @@ def end_reservation():
 				response_code = payment_response['code']
 				return json.dumps(error), response_code, {'Content-Type':'application/json'}
 		else:
-			# the scooter is not currently reserved
-			error = { 'msg': f'Error 422 - No reservation for scooter {scooter_id_to_end} presently exists.' }
+			# the bike is not currently reserved
+			error = { 'msg': f'Error 422 - No reservation for bike {bike_id_to_end} presently exists.' }
 			return json.dumps(error), HTTPStatus.UNPROCESSABLE_ENTITY.value, {'Content-Type':'application/json'}	# respond with status 422
 	else:
-		# no scooter with the id was found
-		error = { 'msg': f'Error 422 - No scooter with id {scooter_id_to_end} was found.' }
+		# no bike with the id was found
+		error = { 'msg': f'Error 422 - No bike with id {bike_id_to_end} was found.' }
 		return json.dumps(error), HTTPStatus.UNPROCESSABLE_ENTITY.value, {'Content-Type':'application/json'}	# respond with status 422
 
 
@@ -161,10 +161,10 @@ def end_reservation():
 # ==================
 
 
-def pay(scooter, end_lat, end_lng):
+def pay(bike, end_lat, end_lng):
 	# Initialise the payment process
 	# construct location point tuples
-	old_location = (scooter.lat, scooter.lng)
+	old_location = (bike.lat, bike.lng)
 	new_location = (end_lat, end_lng)
 	# calculate distance between points, in metres
 	distance_ridden = geodesic(old_location, new_location).m
@@ -187,40 +187,40 @@ def calculate_cost(distance):
 
 		
 def init_db():
-	db_json = open('scooter_db.json', 'r').read()
+	db_json = open('bike_db.json', 'r').read()
 	db_list = json.loads(db_json)
-	# populate Scooter objects for easier access later
+	# populate Bike objects for easier access later
 	db = []
-	for scooter in db_list:
-		scooter_obj = Scooter(	scooter['id'], 
-								scooter['lat'], 
-								scooter['lng'], 
-								scooter['is_reserved']
+	for bike in db_list:
+		bike_obj = Bike(	bike['id'], 
+								bike['lat'], 
+								bike['lng'], 
+								bike['is_reserved']
 							 )
-		db.append(scooter_obj)
+		db.append(bike_obj)
 	return db
 	
 	
-def get_scooter_with_id(search_id, db):
+def get_bike_with_id(search_id, db):
 	try:
-		scooter = next(scooter for scooter in db if scooter.id == search_id)	# get the scooter with specified id
-		return scooter
+		bike = next(bike for bike in db if bike.id == search_id)	# get the bike with specified id
+		return bike
 	except StopIteration:
-		# no scooter with the id was found
+		# no bike with the id was found
 		return None
 	
 
 def write_db(db):
-	# serialize Scooter objects 
+	# serialize Bike objects 
 	db_list = convert_db_to_dictlist(db)
 	db_json = json.dumps(db_list)
-	open('scooter_db.json', 'w').write(db_json)
+	open('bike_db.json', 'w').write(db_json)
 	return True
 		
-# class scooter for internal use
-class Scooter:
-	def __init__(self, scooter_id, lat, lng, is_reserved):
-		self.id = scooter_id
+# class bike for internal use
+class Bike:
+	def __init__(self, bike_id, lat, lng, is_reserved):
+		self.id = bike_id
 		self.lat = lat
 		self.lng = lng
 		self.is_reserved = is_reserved
@@ -234,8 +234,8 @@ class Scooter:
 		
 def convert_db_to_dictlist(db):
 	db_list = []
-	for scooter in db:
-		db_list.append(scooter.to_dict())
+	for bike in db:
+		db_list.append(bike.to_dict())
 	return db_list
 		
 
