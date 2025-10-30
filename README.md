@@ -1,6 +1,6 @@
 ## Personal Transport API
 
-Lightweight FastAPI scaffold for powering personal transport services (scooters, bikes, and beyond).
+Lightweight FastAPI scaffold for powering personal bike transport services (and beyond).
 The initial goal is a deterministic, reproducible backend foundation that the team can grow rapidly.
 
 ---
