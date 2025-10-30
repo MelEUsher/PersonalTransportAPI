@@ -4,7 +4,7 @@ from __future__ import annotations
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models.bike import Bike
+from app.models.bike import AvailabilityStatus, Bike
 from app.schemas.bike_schema import BikeCreate
 
 
@@ -28,4 +28,12 @@ def get_all_bikes(db: Session) -> list[Bike]:
     return result.scalars().all()
 
 
-__all__ = ["create_bike", "get_bike_by_id", "get_all_bikes"]
+def get_available_bikes(db: Session) -> list[Bike]:
+    """Return only bikes that are currently available for rental."""
+    result = db.execute(
+        select(Bike).where(Bike.availability_status == AvailabilityStatus.AVAILABLE)
+    )
+    return result.scalars().all()
+
+
+__all__ = ["create_bike", "get_bike_by_id", "get_all_bikes", "get_available_bikes"]
