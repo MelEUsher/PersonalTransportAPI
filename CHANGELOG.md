@@ -74,3 +74,15 @@
 - pytest confirms all branches and error conditions pass
 - all functions deterministic, with no database or HTTP interactions
 
+## [feature/issue-9-bikes-router] - 2025-10-30
+**Summary:** Implemented a read-only /api/bikes endpoint to expose all available bikes.
+
+**Changes**
+- app/routers/bikes.py: added GET /api/bikes route using get_available_bikes() and BikeRead schema.
+- app/repositories/bike_repo.py: introduced get_available_bikes() query filtering bikes by AvailabilityStatus.AVAILABLE.
+- app/main.py: registered the bikes router for /api/bikes routes.
+
+**Verification**
+- Run uvicorn app.main:app --reload and confirm GET /api/bikes returns an HTTP 200 JSON array of available bikes.
+- Optionally seed a few available bikes to verify non-empty responses.
+- 
