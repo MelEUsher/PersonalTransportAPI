@@ -107,3 +107,6 @@ venv.bak/
 # Alembic
 alembic/versions/__pycache__/
 alembic/versions/*.pyc
+
+# Frontend exceptions
+!frontend/src/lib/
