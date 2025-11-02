@@ -101,3 +101,24 @@
   - ❌ Missing rental ID → 404 `NOT_FOUND`.  
 - `pytest` confirms no regressions and validates core service logic.
 
+## [chore/issue-11-init-frontend] – 2025-10-30
+
+**Summary:** Initialized the frontend environment for the Personal Transport API using Vite + React + TypeScript, configured Axios base instance, and established core routing and formatting standards.
+
+**Changes**
+- /frontend/ – created new Vite + React + TypeScript scaffold
+- /frontend/src/lib/api.ts – added Axios base instance using VITE_API_BASE_URL
+- /frontend/src/main.tsx – mounted root React app
+- /frontend/src/App.tsx – added placeholder UI and basic routing
+- /frontend/src/routes/Home.tsx – created placeholder home page at /
+- /frontend/src/routes/Confirm.tsx – created placeholder confirmation route at /confirm/:id
+- /frontend/.eslintrc.cjs, .prettierrc – configured linting and formatting
+- /frontend/.env.example – added VITE_API_BASE_URL variable
+- package.json – added dependencies and npm scripts for dev, build, and lint
+
+**Verification**
+- npm install → installs dependencies successfully
+- npm run dev → launches Vite dev server and renders placeholder UI
+- Confirm Axios instance reads VITE_API_BASE_URL from .env.local
+- Lint passes (npm run lint) and Prettier formats code without errors
+
