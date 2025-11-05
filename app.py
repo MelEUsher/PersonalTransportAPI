@@ -1,3 +1,6 @@
+# Legacy Flask entry point disabled to avoid running insecure dev server.
+raise RuntimeError("Legacy Flask app disabled — use FastAPI via app/main.py")
+
 from flask import Flask, render_template, request, redirect, url_for, make_response
 from geopy.distance import distance as geodesic
 import json, werkzeug
