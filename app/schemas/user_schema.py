@@ -9,6 +9,7 @@ class UserCreate(BaseModel):
 
     name: str
     email: str
+    hashed_password: str
     phone: str | None = None
 
 
