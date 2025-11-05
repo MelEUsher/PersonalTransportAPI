@@ -160,6 +160,9 @@ These updates elevate the Personal Transport API from medium to high-assurance b
   - no unprotected write endpoints found
 - Payments Endpoint: hardened payment stub to return 403 Forbidden for unauthenticated requests
 - README.md: updated Security Notes to document new protections and schema alignment
+- introduced app/routers/payments.py to secure the /api/payments stub with authentication; unauthorized requests return 403 Forbidden while valid JWTs complete the stub flow successfully.
+- added payments router import in app/main.py to serve alongside existing routes.
+- pytest now aborts on legacy Flask tests (intentional RuntimeError); no FastAPI regressions observed.
 
 **Verification**
 - alembic upgrade head applies new hashed_password column with no data loss
