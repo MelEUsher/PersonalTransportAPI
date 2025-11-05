@@ -61,6 +61,18 @@ def test_validate_range_raises_for_invalid_windows(start_offset, end_offset, mes
         validate_range(start, end)
 
 
+@pytest.mark.parametrize(
+    "start_value,end_value,field",
+    [
+        ("2024-06-01", date(2024, 6, 2), "start_date"),
+        (date(2024, 6, 1), "2024-06-02", "end_date"),
+    ],
+)
+def test_validate_range_rejects_non_date_inputs(start_value, end_value, field):
+    with pytest.raises(ValueError, match=field):
+        validate_range(start_value, end_value)
+
+
 def test_compute_total_price_cents_multiplies_rate_and_days():
     total = compute_total_price_cents(1500, 3)
 
@@ -81,6 +93,12 @@ def test_compute_total_price_cents_validates_inputs(rate, days, message):
         compute_total_price_cents(rate, days)
 
 
+def test_compute_total_price_cents_accepts_zero_rate():
+    total = compute_total_price_cents(0, 2)
+
+    assert total == 0
+
+
 def test_is_bike_available_returns_true_for_available_bike():
     bike = BikeStub("available")
 
@@ -95,6 +113,14 @@ def test_is_bike_available_handles_dicts():
     available = is_bike_available(bike, date(2024, 6, 1), date(2024, 6, 2))
 
     assert available is False
+
+
+def test_is_bike_available_treats_status_case_insensitively():
+    bike = BikeStub("AVAILABLE")
+
+    available = is_bike_available(bike, date(2024, 6, 1), date(2024, 6, 2))
+
+    assert available is True
 
 
 def test_is_bike_available_raises_when_status_missing():
