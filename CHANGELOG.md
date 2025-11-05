@@ -133,7 +133,7 @@ This update ensures the API cannot be accessed or modified by unauthorized users
 - app/main.py: registered auth router, added CORS middleware, integrated SlowAPI limiter, removed debug mode
 - requirements.txt / pyproject.toml: added python-jose[cryptography], passlib[bcrypt], slowapi, and python-dotenv
 - .env.example: added JWT_SECRET_KEY, JWT_ALGORITHM, and ACCESS_TOKEN_EXPIRE_MINUTES placeholders
-- README.md: documented authentication usage and HTTPS deployment reminders
+- README.md: documented authentication usage and HTTPS deployment reminders, added new Authentication & Security, Environment Variables, and Deployment sections to document JWT flow, .env setup, and production hardening steps
 - (optional) updated payments and rentals routes to require valid tokens before mutations
 
 **Verification**
