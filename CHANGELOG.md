@@ -144,3 +144,24 @@ This update ensures the API cannot be accessed or modified by unauthorized users
 - Environment variables loaded successfully from .env
 - No debug flags or hard-coded secrets remain
 - All existing pytest suites pass
+
+## [feature/issue-12-api-security] – 2025-11-5 Follow-Up Enhancements
+
+**Summary**: Completed the remaining security hardening tasks identified after initial authentication rollout.
+These updates elevate the Personal Transport API from medium to high-assurance by securing database migrations, legacy code paths, and all write-access routes.
+
+**Changes**
+- Alembic Migration: added hashed_password column to the users table to align database schema with JWT authentication system
+- Legacy Flask App: deprecated app.py by raising a runtime error to prevent accidental launch of the unauthenticated server
+- Route Protection: extended Depends(get_current_user) to all POST, PATCH, PUT, and DELETE routes across routers (bikes, users, rentals, payments)
+- Payments Endpoint: hardened payment stub to return 403 Forbidden for unauthenticated requests
+- README.md: updated Security Notes to document new protections and schema alignment
+
+**Verification**
+- alembic upgrade head applies new hashed_password column with no data loss
+- Running python app.py raises explicit “Legacy Flask app disabled” error
+- All write routes require valid JWT token; unauthenticated requests return 401/403
+- GET routes remain publicly accessible
+- Payment stub accessible only for authorized users
+- All pytest suites pass; no functional regressions detected
+- README accurately reflects secure production state
