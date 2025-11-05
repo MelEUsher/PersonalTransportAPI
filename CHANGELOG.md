@@ -122,3 +122,25 @@
 - Confirm Axios instance reads VITE_API_BASE_URL from .env.local
 - Lint passes (npm run lint) and Prettier formats code without errors
 
+## [feature/issue-12-api-security] – 2025-11-5
+
+**Summary:** Added full JWT-based authentication, CORS restrictions, environment-based secrets, and rate-limiting to secure all write operations in the FastAPI backend.
+This update ensures the API cannot be accessed or modified by unauthorized users once deployed publicly.
+
+**Changes**
+- app/auth.py: implemented JWT generation & validation, password hashing, and user authentication helpers
+- app/routers/auth.py: added /auth/register and /auth/login routes using FastAPI’s OAuth2PasswordBearer flow
+- app/main.py: registered auth router, added CORS middleware, integrated SlowAPI limiter, removed debug mode
+- requirements.txt / pyproject.toml: added python-jose[cryptography], passlib[bcrypt], slowapi, and python-dotenv
+- .env.example: added JWT_SECRET_KEY, JWT_ALGORITHM, and ACCESS_TOKEN_EXPIRE_MINUTES placeholders
+- README.md: documented authentication usage and HTTPS deployment reminders
+- (optional) updated payments and rentals routes to require valid tokens before mutations
+
+**Verification**
+- POST /auth/register creates a new user with hashed password
+- POST /auth/login returns a valid JWT access token
+- Requests to POST/PATCH/DELETE routes return 401 when token missing or invalid
+- GET routes remain publicly accessible
+- Environment variables loaded successfully from .env
+- No debug flags or hard-coded secrets remain
+- All existing pytest suites pass
