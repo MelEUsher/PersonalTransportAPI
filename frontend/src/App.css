@@ -119,3 +119,144 @@ main.container p {
   font-family: 'Fira Code', 'SFMono-Regular', ui-monospace, monospace;
   font-size: 0.9rem;
 }
+
+.rental-form {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.rental-form fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.rental-form legend {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.rental-form__field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.rental-form__field input,
+.rental-form__field select {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5f5;
+  font-size: 1rem;
+}
+
+.rental-form__field input:focus-visible,
+.rental-form__field select:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.rental-form__error {
+  color: #b91c1c;
+  font-size: 0.9rem;
+}
+
+.rental-form__error-panel {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.rental-form__summary {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.95rem;
+}
+
+.rental-form__submit {
+  align-self: flex-start;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.rental-form__submit:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.rental-form__submit:not(:disabled):hover,
+.rental-form__submit:not(:disabled):focus-visible {
+  background-color: #1d4ed8;
+}
+
+.confirmation-card {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.confirmation-card h2 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.5rem;
+}
+
+.confirmation-card__details {
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.confirmation-card__details div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.confirmation-card__details dt {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.confirmation-card__details dd {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #1f2937;
+}
+
+.confirmation-card__contact h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.confirmation-card__contact ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: grid;
+  gap: 0.25rem;
+  color: #334155;
+}
