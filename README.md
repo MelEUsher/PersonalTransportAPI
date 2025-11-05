@@ -49,10 +49,10 @@ Follow these steps exactly to spin up the local backend.
    ```
    cp .env.example .env
    ```
-   Adjust `DATABASE_URL` if you are not using the default SQLite database.
+   Adjust `DATABASE_URL` if you are not using the default SQLite database and set a strong value for `JWT_SECRET_KEY`.
 5. **Run the development server**
    ```
-   uvicorn app.main:app --reload
+   uvicorn app.main:app
    ```
 6. **Smoke test the API**
    Visit http://localhost:8000/health or run:
@@ -79,6 +79,15 @@ PersonalTransportAPI/
 ├─ requirements.txt
 └─ (additional project docs and configs)
 ```
+
+---
+
+## Authentication & Security
+- Register accounts via `POST /auth/register`, then obtain JWT bearer tokens with `POST /auth/login`.
+- Include the returned token in the `Authorization: Bearer <token>` header when calling any write route (e.g., `POST /api/rentals`); read-only `GET` routes remain public.
+- Login and registration endpoints are rate limited to five requests per minute per client IP.
+
+> **Deployment note:** Always front this API with HTTPS (for example, via a TLS-terminating reverse proxy such as Nginx or a managed load balancer) and redirect any plain HTTP traffic at the edge before it reaches the application server.
 
 ---
 
