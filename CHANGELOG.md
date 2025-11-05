@@ -206,3 +206,22 @@ These updates elevate the Personal Transport API from medium to high-assurance b
 - Valid rentals (≤ 3 days) redirect to confirmation with accurate total and details.
 - Invalid dates or missing fields display inline errors without submission.
 - No backend, auth, or payment logic modified.
+
+## [chore/issue-15-backend-pytest-coverage] – 2025-11-05
+
+**Summary**: Expanded backend test coverage and implemented a full pytest harness for FastAPI routes and services.
+
+**Changes**
+- tests/conftest.py: Added in-memory SQLite setup with overrides for get_db and get_current_user; introduced AsyncClient fixture using ASGITransport for endpoint testing.
+- .env: Added JWT_SECRET_KEY to ensure rate limiter and auth config load properly during tests.
+- pytest.ini: Scoped test discovery to tests/ directory, enforced strict warnings, and silenced cryptography-related noise from the auth stack.
+- tests/test_rental_service.py: Extended unit coverage with invalid-type range checks, zero-rate pricing, and case-insensitive availability assertions.
+- tests/test_bikes_router.py & tests/test_rentals_router.py: Added HTTP-level integration tests for bikes listing and rentals create/get flow with helper to simulate status behavior.
+- tests/test_app.py: Adjusted to skip cleanly when the legacy Flask module is disabled, preventing suite interruption.
+
+**Verification**
+- Executed pytest -v: 22 passed, 1 skipped.
+- Confirmed consistent environment load and proper fixture isolation.
+- No regressions or runtime warnings observed.
+
+
