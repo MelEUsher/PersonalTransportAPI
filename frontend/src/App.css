@@ -19,6 +19,91 @@ main.container p {
   color: #334155;
 }
 
+.bike-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 1rem;
+}
+
+.bike-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.bike-card__header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #1f2937;
+}
+
+.bike-card__type {
+  margin: 0;
+  color: #4b5563;
+}
+
+.bike-card__details {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.bike-card__details div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.bike-card__details dt {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.bike-card__details dd {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #1f2937;
+}
+
+.bike-card__availability {
+  font-weight: 600;
+}
+
+.bike-card__availability--available {
+  color: #16a34a;
+}
+
+.bike-card__availability--unavailable {
+  color: #b91c1c;
+}
+
+.bike-card__rent-button {
+  align-self: flex-start;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.bike-card__rent-button:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.bike-card__rent-button:not(:disabled):hover,
+.bike-card__rent-button:not(:disabled):focus-visible {
+  background-color: #1d4ed8;
+}
+
 .api-hint {
   margin-top: 1rem;
   padding: 0.75rem 1rem;
