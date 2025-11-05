@@ -12,7 +12,7 @@ from slowapi.middleware import SlowAPIMiddleware
 
 from app.rate_limiter import limiter
 from app.routers import auth as auth_router
-from app.routers import bikes, rentals
+from app.routers import bikes, payments, rentals
 
 # Configure logging early so security events are captured.
 logging.basicConfig(level=logging.INFO)
@@ -38,6 +38,7 @@ app.add_middleware(SlowAPIMiddleware)
 
 app.include_router(auth_router.router)
 app.include_router(bikes.router)
+app.include_router(payments.router)
 app.include_router(rentals.router)
 
 
