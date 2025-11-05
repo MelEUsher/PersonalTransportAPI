@@ -5,6 +5,20 @@ The initial goal is a deterministic, reproducible backend foundation that the te
 
 ---
 
+## Authentication & Security
+- JWT-based authentication protects all write routes. Obtain a token via `POST /auth/login` and include it in the `Authorization` header:
+  ```
+  Authorization: Bearer <your-access-token>
+  ```
+- `GET` routes remain publicly accessible for read-only scenarios.
+- Access tokens expire after the configured window (default 60 minutes); request a new token by logging in again.
+- **Developer setup checklist**
+  1. Copy environment template: `cp .env.example .env`
+  2. Set `DATABASE_URL` (if not using SQLite) and a strong `JWT_SECRET_KEY`
+  3. Start the API: `uvicorn app.main:app`
+  4. Register a user (`POST /auth/register`), log in, and call protected routes with the Bearer token
+- Always deploy behind HTTPS so tokens are never transmitted over plaintext connections.
+
 ## Current Capabilities
 - FastAPI application bootstrap with `/health` returning `{"status": "ok"}`
 - SQLAlchemy engine + session factory configured via environment variables
@@ -63,6 +77,14 @@ Follow these steps exactly to spin up the local backend.
 
 ---
 
+## Environment Variables
+| Name | Description | Example |
+| --- | --- | --- |
+| `DATABASE_URL` | SQLAlchemy connection string; defaults to local SQLite database | `sqlite:///./dev.db` |
+| `JWT_SECRET_KEY` | Long, random signing key used to secure JWT tokens | `super-long-random-string` |
+| `JWT_ALGORITHM` | JWT signing algorithm; must match clients | `HS256` |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | Minutes before issued access tokens expire | `60` |
+
 ## Project Structure
 ```
 PersonalTransportAPI/
@@ -98,3 +120,12 @@ Keep the workflow simple and predictable:
 - Open a **Pull Request** that references the Issue (`Closes #<issue-number>`).
 - Merge when checks pass; the Issue will close automatically.
 - Keep the GitHub Project board in sync (To Do → In Progress → Done).
+
+---
+
+## Deployment
+- Terminate TLS in front of the API (e.g., managed HTTPS on Render, Railway, Vercel, or a reverse proxy) and redirect any HTTP traffic to HTTPS.
+- Keep the `.env` file and its secrets out of version control and deployment logs.
+- Run the app with debug tooling disabled and without auto-reload in production.
+- Restrict CORS to the trusted frontend origins defined in `app.main`.
+- Rotate JWT signing keys on a regular cadence and revoke tokens if keys are compromised.
