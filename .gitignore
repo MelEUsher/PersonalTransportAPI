@@ -110,3 +110,12 @@ alembic/versions/*.pyc
 
 # Frontend exceptions
 !frontend/src/lib/
+
+# Frontend build cache (Vite)
+# ---------------------------
+# The .vite directory stores temporary build and dependency
+# cache files created by the Vite dev server. These are
+# automatically regenerated and should never be committed.git status
+echo "frontend/.vite/" >> .gitignore
+git add .gitignore
+git commit -m "chore: ignore Vite cache directory"
