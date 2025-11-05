@@ -153,7 +153,11 @@ These updates elevate the Personal Transport API from medium to high-assurance b
 **Changes**
 - Alembic Migration: added hashed_password column to the users table to align database schema with JWT authentication system
 - Legacy Flask App: deprecated app.py by raising a runtime error to prevent accidental launch of the unauthenticated server
-- Route Protection: extended Depends(get_current_user) to all POST, PATCH, PUT, and DELETE routes across routers (bikes, users, rentals, payments)
+- Route Protection Audit -  confirmed all existing routers already comply with JWT security standards. 
+  - `rentals.py` write endpoints require authentication
+  - `bikes.py` provides only public read access
+  - `auth.py` routes remain intentionally unguarded for registration and login
+  - no unprotected write endpoints found
 - Payments Endpoint: hardened payment stub to return 403 Forbidden for unauthenticated requests
 - README.md: updated Security Notes to document new protections and schema alignment
 
@@ -165,3 +169,4 @@ These updates elevate the Personal Transport API from medium to high-assurance b
 - Payment stub accessible only for authorized users
 - All pytest suites pass; no functional regressions detected
 - README accurately reflects secure production state
+
