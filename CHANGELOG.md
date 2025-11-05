@@ -223,5 +223,3 @@ These updates elevate the Personal Transport API from medium to high-assurance b
 - Executed pytest -v: 22 passed, 1 skipped.
 - Confirmed consistent environment load and proper fixture isolation.
 - No regressions or runtime warnings observed.
-
-
