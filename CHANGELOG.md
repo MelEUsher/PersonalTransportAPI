@@ -173,3 +173,20 @@ These updates elevate the Personal Transport API from medium to high-assurance b
 - All pytest suites pass; no functional regressions detected
 - README accurately reflects secure production state
 
+## [feature/issue-13-bike-list-page] - 2025-11-05
+
+**Summary**: Implemented front-end Bike List page with reusable card component and API integration for available bikes.
+
+**Changes**
+- Created src/pages/BikeList.tsx to fetch and display bikes from /api/bikes.
+- Added src/components/BikeCard.tsx for modular rendering of individual bikes with a ‘Rent’ CTA.
+- Implemented loading and empty states for user-friendly UX.
+- Integrated React Router navigation to rental form page (/rent/:bikeId).
+- Ensured accessibility compliance using semantic HTML and alt attributes.
+- Verified successful API response rendering and route navigation in dev environment.
+
+**Verification**
+- Started frontend via npm run dev and confirmed /bikes route loads with API results.
+- Tested navigation to rental form from each card.
+- Verified no console errors or TypeScript issues.
+
