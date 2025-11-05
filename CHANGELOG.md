@@ -190,3 +190,19 @@ These updates elevate the Personal Transport API from medium to high-assurance b
 - Tested navigation to rental form from each card.
 - Verified no console errors or TypeScript issues.
 
+## [feature/issue-14-rental-form] – 2025-11-05
+
+**Summary**: Implemented a client-side rental creation and confirmation flow with inline validation, cohesive styling, and updated routing.
+
+**Changes**
+- frontend/src/pages/RentalForm.tsx: Added rental form with fields for name, email, phone (optional), start/end dates, and selected bike; enforces 3-day limit, computes totals, displays inline validation errors, and submits to /api/rentals.
+- frontend/src/pages/Confirmation.tsx: Added confirmation view that fetches /api/rentals/{id}, formats totals and dates, falls back to preview data if needed, and displays contact information with error handling.
+- frontend/src/App.tsx: Integrated new rental flow and removed deprecated placeholder confirmation page.
+- frontend/src/App.css: Added cohesive styling for rental form and confirmation summary cards to match the design system.
+- frontend/src/pages/Confirm.tsx: Removed obsolete component replaced by new confirmation page.
+
+**Verification**
+- npm run build completed successfully.
+- Valid rentals (≤ 3 days) redirect to confirmation with accurate total and details.
+- Invalid dates or missing fields display inline errors without submission.
+- No backend, auth, or payment logic modified.
