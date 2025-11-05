@@ -5,7 +5,9 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
+from app.auth import get_current_user
 from app.db import get_db
+from app.models.user import User
 from app.repositories import bike_repo, rental_repo
 from app.schemas.rental_schema import RentalCreate, RentalRead
 from app.services import rental_service
@@ -23,7 +25,9 @@ def _error_response(status_code: int, code: str, message: str) -> JSONResponse:
 
 @router.post("", response_model=RentalRead)
 def create_rental(
-    payload: RentalCreate, db: Session = Depends(get_db)
+    payload: RentalCreate,
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user),
 ) -> RentalRead | JSONResponse:
     """
     Validate a rental request, compute pricing, and persist the rental record.
