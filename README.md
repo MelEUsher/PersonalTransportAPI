@@ -1,7 +1,6 @@
 ## Personal Transport API
 
-Lightweight FastAPI scaffold for powering personal bike transport services (and beyond).
-The initial goal is a deterministic, reproducible backend foundation that the team can grow rapidly.
+A fork-extended REST API for managing bicycle rentals, adapted from an existing transport service codebase. Includes API routing, domain-specific data schema, authentication, and test-readiness. This project extends a scooter reservation API to support bicycle rentals for a rural tourism environment. It refactors data models and API logic to reflect seasonal availability, multi-location assets, and secure authenticated actions.
 
 ---
 
